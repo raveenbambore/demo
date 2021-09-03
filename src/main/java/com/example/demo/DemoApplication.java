@@ -1,36 +1,26 @@
 package com.example.demo;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
+@RestController
 public class DemoApplication {
+
+	@Autowired
+	TaskDAO taskDAO;
 
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);
 	}
 
-}
-
-@RestController
-class TestController {
-
-	
-	@GetMapping("/")
-	public List<String> welcome() {
-		return null;
-	}
-
-	@GetMapping("/entries")
-	public List<Entries> getEntries() {
-		return new ArrayList<>();
+	@RequestMapping(value = "/tasks/{id}", method = RequestMethod.GET)
+	public String getTasks(@PathVariable("id") String taskId) {
+		return taskDAO.getTaskById(taskId);
 	}
 }
